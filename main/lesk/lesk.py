@@ -4,17 +4,15 @@ def lesk_algorithm(sentence1, sentence2, lemma):
     answer1 = simple_lesk(sentence1, lemma)
     answer2 = simple_lesk(sentence2, lemma)
 
-    print("Sentence 1: ", sentence1)
-    print("-Sense:", answer1)
-    print("-Definition:", answer1.definition())
-
-    print("Sentence 2: ", sentence2)
-    print("-Sense:", answer2)
-    print("-Definition:", answer2.definition())
-
-    if(answer1 == answer2):
-        print("TRUE")
+    definition1 = ""
+    if hasattr(answer1, 'definition'):
+        definition1 = answer1.definition()
+    definition2 = ""
+    if hasattr(answer2, 'definition'):
+        definition2 = answer2.definition()
+    if answer1 == answer2:
+        tag = "T"
     else:
-        print("FALSE")
+        tag = "F"
+    return tag, answer1, definition1, answer2, definition2
 
-lesk_algorithm('I went to the bank to deposit my money', 'I go to the bank to deposit my money', 'bank')
