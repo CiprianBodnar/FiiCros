@@ -1,11 +1,18 @@
 import json
+# from lesk.lesk import lesk_algorithm
 
 def readFromData():
-    with open('C:\Faculty\Master2\SPALN\FiiCros\\training\multilingual\\training.en-en.data', 'r',  encoding="utf8") as myfile:
-        data=myfile.read()
+    with open('C:\\Users\\User\\Desktop\\Master\\SPLN\\FiiCros\\training\multilingual\\training.en-en.data', 'r',  encoding="utf8") as myfile:
+        data = myfile.read()
 
     obj = json.loads(data)
-    for o in obj:
-        print(o)
+    return obj
 
-readFromData()
+def apply_lesk():
+    obj = readFromData()
+    for context in obj:
+        sentence1 = context["sentence1"]
+        print(sentence1)
+
+
+apply_lesk()
