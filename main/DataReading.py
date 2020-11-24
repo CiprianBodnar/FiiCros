@@ -7,7 +7,7 @@ file_data_context = '../training/train_data_context.txt'
 
 def readFromData():
     with open(
-            'C:\\Users\\Andrada\\OneDrive\\Desktop\\Master\\SNLP\\FiiCros\\training\multilingual\\training.en-en.data',
+            'C:\Faculty\Master2\SPALN\FiiCros\\training\multilingual\\training.en-en.data',
             'r', encoding="utf8") as myfile:
         data = myfile.read()
 
@@ -31,15 +31,24 @@ def createDataContext(tag, sentence1, sentence2, answer1, definition1, answer2, 
 def apply_lesk(train_gold):
     f = open(train_gold, 'a', encoding="utf-8")
     obj = readFromData()
+    mapOfContext = {}
+    mapOfContext['context'] = []
     for context in obj:
         sentence1 = context["sentence1"]
         sentence2 = context["sentence2"]
         lemma = context["lemma"]
         tag, answer1, definition1, answer2, definition2 = lesk_algorithm(sentence1, sentence2, lemma)
         createDataContext(tag, sentence1, sentence2, answer1, definition1, answer2, definition2, file_data_context)
-        print(context["id"] + '=>' + tag + '\n')
-        f.writelines(context["id"] + '=>' + tag + '\n')
+        #print(context["id"] + '=>' + tag + '\n')
 
+        mapOfContext['context'].append({
+            'id': context["id"],
+            'tag' : tag
+        })
+       # f.writelines(context["id"] + '=>' + tag + '\n')
+
+    with open('../training/example.json', 'w') as jsonFile:
+        json.dump(mapOfContext, jsonFile, indent= 3)
     f.close()
 
 
