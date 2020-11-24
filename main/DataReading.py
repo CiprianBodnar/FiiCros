@@ -7,13 +7,30 @@ file_data_context = '../training/train_data_context.txt'
 
 def readFromData():
     with open(
-            'C:\Faculty\Master2\SPALN\FiiCros\\training\multilingual\\training.en-en.data',
+            'C:\\Users\\User\\Desktop\\Master\\SPLN\\FiiCros\\training\\multilingual\\training.en-en.data',
             'r', encoding="utf8") as myfile:
         data = myfile.read()
 
     obj = json.loads(data)
     return obj
 
+def readFromGoldData():
+    with open(
+            'C:\\Users\\User\\Desktop\\Master\\SPLN\\FiiCros\\training\\multilingual\\training.en-en.gold',
+            'r', encoding="utf8") as myfile:
+        data = myfile.read()
+
+    gold_obj = json.loads(data)
+    return gold_obj
+
+def readFromTrainData():
+    with open(
+            'C:\\Users\\User\\Desktop\\Master\\SPLN\\FiiCros\\training\\example.json',
+            'r', encoding="utf8") as myfile:
+        data = myfile.read()
+
+    train_obj = json.loads(data)
+    return train_obj
 
 def createDataContext(tag, sentence1, sentence2, answer1, definition1, answer2, definition2, file_context):
     f = open(file_context, 'a', encoding="utf-8")
@@ -52,4 +69,19 @@ def apply_lesk(train_gold):
     f.close()
 
 
-apply_lesk(file_train_gold)
+def result_accuracy():
+    gold = readFromGoldData()
+    train = readFromTrainData()
+
+    good = 0
+    for i in range(0, len(gold)):
+        if(gold[i]['tag'] == train[i]['tag']):
+            good = good + 1
+    result = good/len(gold) * 100
+    print("Good answer(8000 initial): ", good, '\n')
+    print("Percentage of good answer: ", result, '%')
+
+result_accuracy()
+
+
+# apply_lesk(file_train_gold)
