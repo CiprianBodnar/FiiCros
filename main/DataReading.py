@@ -3,21 +3,22 @@ from main.lesk.lesk import lesk_algorithm
 
 file_train_gold = '../training/new_train_gold.txt'
 file_data_context = '../training/train_data_context.txt'
+file_dataTrain = '../training/multilingual/training.en-en.data'
+file_goldTrain = '../training/multilingual/training.en-en.gold'
 
-
-def readFromData():
+def readFromData(file_train_data):
     with open(
-            'C:\\Users\\User\\Desktop\\Master\\SPLN\\FiiCros\\training\\multilingual\\training.en-en.data',
-            'r', encoding="utf8") as myfile:
+            # 'C:\\Users\\Andrada\\OneDrive\\Desktop\\Master\\SPLN\\FiiCros\\training\\multilingual\\training.en-en.data',
+            file_train_data ,'r', encoding="utf-8") as myfile:
         data = myfile.read()
 
     obj = json.loads(data)
     return obj
 
-def readFromGoldData():
+def readFromGoldData(file_train_gold):
     with open(
-            'C:\\Users\\User\\Desktop\\Master\\SPLN\\FiiCros\\training\\multilingual\\training.en-en.gold',
-            'r', encoding="utf8") as myfile:
+            # 'C:\\Users\\Andrada\\OneDrive\\Desktop\\Master\\SPLN\\FiiCros\\training\\multilingual\\training.en-en.gold',
+            file_train_gold,'r', encoding="utf-8") as myfile:
         data = myfile.read()
 
     gold_obj = json.loads(data)
@@ -25,8 +26,8 @@ def readFromGoldData():
 
 def readFromTrainData():
     with open(
-            'C:\\Users\\User\\Desktop\\Master\\SPLN\\FiiCros\\training\\example.json',
-            'r', encoding="utf8") as myfile:
+            'C:\\Users\\Andrada\\OneDrive\\Desktop\\Master\\SPLN\\FiiCros\\training\\example.json',
+            'r', encoding="utf-8") as myfile:
         data = myfile.read()
 
     train_obj = json.loads(data)
@@ -47,7 +48,7 @@ def createDataContext(tag, sentence1, sentence2, answer1, definition1, answer2, 
 
 def apply_lesk(train_gold):
     f = open(train_gold, 'a', encoding="utf-8")
-    obj = readFromData()
+    obj = readFromData(file_dataTrain)
     mapOfContext = {}
     mapOfContext['context'] = []
     for context in obj:
@@ -70,18 +71,18 @@ def apply_lesk(train_gold):
 
 
 def result_accuracy():
-    gold = readFromGoldData()
+    gold = readFromGoldData(file_goldTrain)
     train = readFromTrainData()
 
     good = 0
     for i in range(0, len(gold)):
-        if(gold[i]['tag'] == train[i]['tag']):
+        if gold[i]['tag'] == train[i]['tag']:
             good = good + 1
     result = good/len(gold) * 100
     print("Good answer(8000 initial): ", good, '\n')
     print("Percentage of good answer: ", result, '%')
 
-result_accuracy()
+# result_accuracy()
 
 
 # apply_lesk(file_train_gold)
