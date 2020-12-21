@@ -6,6 +6,7 @@ from nltk.stem.porter import *
 from gensim.parsing.preprocessing import STOPWORDS
 import string
 from main.DataReading import readFromData, readFromGoldData
+import numpy as np
 
 
 def tokenizationSentence(sentence):
@@ -110,13 +111,48 @@ def createNewTrainData():
     with open(final_train_data, 'w') as jsonFile:
         json.dump(mapOfContext, jsonFile, indent=3)
 
-def countVocabulary():
+
+def getVocabulary():
+    vocabulary = []
     final_train_data = '../../training/train_data_word2vec.json'
     with open(final_train_data, "r") as f:
-        words = set(f.readlines())
-        count = len(words)
-    print(count)
+        data = json.load(f)
+    for input in data:
+        for word in input['sentence1'].split():
+            if word not in vocabulary:
+                vocabulary.append(word)
+        for word in input['sentence2'].split():
+            if word not in vocabulary:
+                vocabulary.append(word)
+    words = set(vocabulary)
+    count = len(words)
+    return vocabulary, count
 
-# print(transformSentence("The Sahul Shelf is sometimes taken to also include the Rowley Shelf to the southwest,
-# girding the north coast of Western Australia as far as North West Cape.", 'gird', 5)) createNewTrainData()
-countVocabulary()
+vocabulary, count = getVocabulary()
+print(vocabulary, count)
+
+
+def addToMatrix():
+    vocabulary, count = getVocabulary()
+
+    final_train_data = '../../training/train_data_word2vec.json'
+    with open(final_train_data, "r") as f:
+        data = json.load(f)
+
+    vocab = np.array(vocabulary)
+    for input in data:
+        row = []
+        for word in vocabulary:
+            if word in input['sentence1'].split():
+                row.append('1')
+            else:
+                row.append('0')
+            if word in input['sentence2'].split():
+                row.append('1')
+            else:
+                row.append('0')
+        row_list = np.array(row)
+        vocabulary = np.concatenate([vocab, row_list])
+    return vocabulary
+
+# addToMatrix()

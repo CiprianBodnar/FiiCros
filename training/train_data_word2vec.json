@@ -1,5 +1,4 @@
-{
-   "context": [
+[
       {
          "sentence1": "context coordination integration Bolivia hold key play process infrastructure development ",
          "sentence2": "musical play subject staged Kathmandu day ",
@@ -48000,5 +47999,4 @@
          "lemma": "gird",
          "tag": "T"
       }
-   ]
-}
+]
