@@ -114,34 +114,33 @@ def createNewTrainData():
 
 
 def getVocabulary():
-    vocabulary = []
+    all_words = []
     final_train_data = '../../training/train_data_word2vec.json'
     with open(final_train_data, "r") as f:
         data = json.load(f)
     for input in data:
         for word in input['sentence1'].split():
-            if word.lower() not in vocabulary:
-                vocabulary.append(word.lower())
+            all_words.append(word.lower())
         for word in input['sentence2'].split():
-            if word.lower() not in vocabulary:
-                vocabulary.append(word.lower())
-    words = set(vocabulary)
-    count = len(words)
-    ctr = collections.Counter(words)
-    return vocabulary, count, ctr
+            all_words.append(word.lower())
+    ctr = collections.Counter(all_words)
 
-vocabulary, count, ctr = getVocabulary()
-print(vocabulary, count, ctr)
+    final_vocabulary = []
+    for i in ctr:
+        if (ctr[i] > 1):
+            final_vocabulary.append(i)
+    count = len(final_vocabulary)
+
+    return final_vocabulary, count
+
+final_vocabulary, count = getVocabulary()
+print(final_vocabulary)
 print(count)
-print(ctr)
 
-for i in ctr:
-    # if(ctr[i] > 1):
-    print(i, ctr[i])
 
 
 def addToMatrix():
-    vocabulary, count, ctr = getVocabulary()
+    vocabulary, count = getVocabulary()
 
     final_train_data = '../../training/train_data_word2vec.json'
     with open(final_train_data, "r") as f:
@@ -163,4 +162,4 @@ def addToMatrix():
         vocabulary = np.concatenate([vocab, row_list])
     return vocabulary
 
-# addToMatrix()
+addToMatrix()
