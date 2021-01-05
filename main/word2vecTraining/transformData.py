@@ -135,7 +135,7 @@ def getVocabulary():
 
 
 # final_vocabulary, count = getVocabulary()
-# print(final_vocabulary)
+#print(final_vocabulary)
 # print(count)
 
 
@@ -148,6 +148,7 @@ def addToMatrix():
 
     word2vec_matrix = []
     word2vec_matrix.append(vocabulary)
+    MyFile = open('output2.txt', 'w')
 
     for input in data:
         row = []
@@ -160,8 +161,10 @@ def addToMatrix():
                 row.append('1')
             else:
                 row.append('0')
-        # row_list = np.array(row)
         word2vec_matrix.append(row)
+        MyFile.writelines(row)
+        MyFile.write('\n')
+    MyFile.close()
 
     return word2vec_matrix
 
