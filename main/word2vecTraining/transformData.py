@@ -8,6 +8,9 @@ import string
 from main.DataReading import readFromData, readFromGoldData
 import numpy as np
 import collections
+from nltk.tokenize import sent_tokenize, word_tokenize
+import gensim
+from gensim.models import Word2Vec
 
 
 def tokenizationSentence(sentence):
@@ -118,11 +121,24 @@ def getVocabulary():
     final_train_data = '../../training/train_data_word2vec.json'
     with open(final_train_data, "r") as f:
         data = json.load(f)
+
+    data_matrix = []
+
     for input in data:
+        temp = []
+
         for word in input['sentence1'].split():
             all_words.append(word.lower())
         for word in input['sentence2'].split():
             all_words.append(word.lower())
+
+        for j in word_tokenize(input['sentence1']):
+            temp.append(j.lower())
+        for j in word_tokenize(input['sentence2']):
+            temp.append(j.lower())
+
+        data_matrix.append(temp)
+
     ctr = collections.Counter(all_words)
 
     final_vocabulary = []
@@ -131,10 +147,12 @@ def getVocabulary():
             final_vocabulary.append(i)
     count = len(final_vocabulary)
 
-    return final_vocabulary, count
+    return final_vocabulary, count, data_matrix
 
 
-# final_vocabulary, count = getVocabulary()
+final_vocabulary, count, data_matrix = getVocabulary()
+
+
 #print(final_vocabulary)
 # print(count)
 
@@ -169,4 +187,15 @@ def addToMatrix():
     return word2vec_matrix
 
 
-print(addToMatrix())
+def cosine_similarity(vocabulary, count):
+
+    model1 = gensim.models.Word2Vec(vocabulary, min_count=1, size=100)
+    print(model1.similarity('context', 'coordination'))
+
+
+cosine_similarity(data_matrix, count)
+
+
+
+
+# print(addToMatrix())
