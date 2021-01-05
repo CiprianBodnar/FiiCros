@@ -133,10 +133,10 @@ def getVocabulary():
 
     return final_vocabulary, count
 
-final_vocabulary, count = getVocabulary()
-print(final_vocabulary)
-print(count)
 
+# final_vocabulary, count = getVocabulary()
+# print(final_vocabulary)
+# print(count)
 
 
 def addToMatrix():
@@ -146,20 +146,24 @@ def addToMatrix():
     with open(final_train_data, "r") as f:
         data = json.load(f)
 
-    vocab = np.array(vocabulary)
+    word2vec_matrix = []
+    word2vec_matrix.append(vocabulary)
+
     for input in data:
         row = []
         for word in vocabulary:
-            if word in input['sentence1'].split():
+            if word in input['sentence1'].lower().split():
                 row.append('1')
             else:
                 row.append('0')
-            if word in input['sentence2'].split():
+            if word in input['sentence2'].lower().split():
                 row.append('1')
             else:
                 row.append('0')
-        row_list = np.array(row)
-        vocabulary = np.concatenate([vocab, row_list])
-    return vocabulary
+        # row_list = np.array(row)
+        word2vec_matrix.append(row)
 
-addToMatrix()
+    return word2vec_matrix
+
+
+print(addToMatrix())
