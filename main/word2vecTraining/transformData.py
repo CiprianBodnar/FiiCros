@@ -7,6 +7,7 @@ from gensim.parsing.preprocessing import STOPWORDS
 import string
 from main.DataReading import readFromData, readFromGoldData
 import numpy as np
+import collections
 
 
 def tokenizationSentence(sentence):
@@ -126,10 +127,13 @@ def getVocabulary():
                 vocabulary.append(word)
     words = set(vocabulary)
     count = len(words)
-    return vocabulary, count
+    ctr = collections.Counter(words)
+    return vocabulary, count, ctr
 
-vocabulary, count = getVocabulary()
-print(vocabulary, count)
+vocabulary, count, ctr = getVocabulary()
+print(vocabulary, count, ctr)
+print(count)
+print(ctr)
 
 
 def addToMatrix():
