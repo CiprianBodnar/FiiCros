@@ -120,11 +120,11 @@ def getVocabulary():
         data = json.load(f)
     for input in data:
         for word in input['sentence1'].split():
-            if word not in vocabulary:
-                vocabulary.append(word)
+            if word.lower() not in vocabulary:
+                vocabulary.append(word.lower())
         for word in input['sentence2'].split():
-            if word not in vocabulary:
-                vocabulary.append(word)
+            if word.lower() not in vocabulary:
+                vocabulary.append(word.lower())
     words = set(vocabulary)
     count = len(words)
     ctr = collections.Counter(words)
@@ -135,9 +135,13 @@ print(vocabulary, count, ctr)
 print(count)
 print(ctr)
 
+for i in ctr:
+    # if(ctr[i] > 1):
+    print(i, ctr[i])
+
 
 def addToMatrix():
-    vocabulary, count = getVocabulary()
+    vocabulary, count, ctr = getVocabulary()
 
     final_train_data = '../../training/train_data_word2vec.json'
     with open(final_train_data, "r") as f:
