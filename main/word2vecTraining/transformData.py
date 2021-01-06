@@ -153,49 +153,61 @@ def getVocabulary():
 final_vocabulary, count, data_matrix = getVocabulary()
 
 
-#print(final_vocabulary)
+print(final_vocabulary)
 # print(count)
+
+def cosine_similarity(vocabulary, word1, word2):
+    model1 = gensim.models.Word2Vec(vocabulary, min_count=1, size=100)
+    return model1.similarity(word1, word2)
+
+
+# cosine_similarity(data_matrix, 'context', 'coordination')
 
 
 def addToMatrix():
-    vocabulary, count = getVocabulary()
-
+    vocabulary, count, data_matrix = getVocabulary()
     final_train_data = '../../training/train_data_word2vec.json'
     with open(final_train_data, "r") as f:
         data = json.load(f)
 
-    word2vec_matrix = []
-    word2vec_matrix.append(vocabulary)
-    MyFile = open('output2.txt', 'w')
+    word2vec_matrix = [vocabulary]
+    score_list = []
+    # MyFile = open('output2.txt', 'w')
 
+    MyFile = open('sum_score.txt', 'w')
     for input in data:
         row = []
+        words_list = []
         for word in vocabulary:
             if word in input['sentence1'].lower().split():
                 row.append('1')
+                words_list.append(word)
             else:
                 row.append('0')
             if word in input['sentence2'].lower().split():
                 row.append('1')
+                words_list.append(word)
             else:
                 row.append('0')
-        word2vec_matrix.append(row)
-        MyFile.writelines(row)
+
+        sum_score = 0
+        for word1 in words_list:
+            for word2 in words_list:
+                if word1 != word2:
+                    print(cosine_similarity(data_matrix, word1, word2))
+                    sum_score = sum_score + cosine_similarity(data_matrix, word1, word2)
+        sum_score = sum_score / len(words_list)
+
+        MyFile.writelines(sum_score)
         MyFile.write('\n')
+
+        score_list.append(sum_score)
+        word2vec_matrix.append(row)
+    #     MyFile.writelines(row)
+    #     MyFile.write('\n')
     MyFile.close()
 
-    return word2vec_matrix
+    return word2vec_matrix, score_list
 
 
-def cosine_similarity(vocabulary, count):
-
-    model1 = gensim.models.Word2Vec(vocabulary, min_count=1, size=100)
-    print(model1.similarity('context', 'coordination'))
-
-
-cosine_similarity(data_matrix, count)
-
-
-
-
-# print(addToMatrix())
+addToMatrix()
