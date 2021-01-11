@@ -1,5 +1,4 @@
 import json
-
 import nltk
 from nltk.stem import WordNetLemmatizer
 from nltk.stem.porter import *
@@ -11,6 +10,8 @@ import collections
 from nltk.tokenize import sent_tokenize, word_tokenize
 import gensim
 from gensim.models import Word2Vec
+from scipy import spatial
+from sent2vec.vectorizer import Vectorizer
 
 
 def tokenizationSentence(sentence):
@@ -153,7 +154,7 @@ def getVocabulary():
 final_vocabulary, count, data_matrix = getVocabulary()
 
 
-print(final_vocabulary)
+# print(final_vocabulary)
 # print(count)
 
 def cosine_similarity(vocabulary, word1, word2):
@@ -194,7 +195,7 @@ def addToMatrix():
         for word1 in words_list:
             for word2 in words_list:
                 if word1 != word2:
-                    print(cosine_similarity(data_matrix, word1, word2))
+                    # print(cosine_similarity(data_matrix, word1, word2))
                     sum_score = sum_score + cosine_similarity(data_matrix, word1, word2)
         sum_score = sum_score / len(words_list)
 
@@ -210,4 +211,43 @@ def addToMatrix():
     return word2vec_matrix, score_list
 
 
-addToMatrix()
+# addToMatrix()
+
+def sent2vecOnSentence(sentence1, sentence2):
+    sentences = [sentence1, sentence2]
+    vectorizer = Vectorizer()
+    vectorizer.bert(sentences)
+    vectors_bert = vectorizer.vectors
+
+    dist = spatial.distance.cosine(vectors_bert[0], vectors_bert[1])
+    return dist
+
+
+def getCosineSimilarity():
+    final_train_data = '../../training/train_data_word2vec.json'
+    score_data = '../../training/score_data_sent2vec.json'
+    with open(final_train_data, "r") as f:
+        data = json.load(f)
+
+    index = 0
+    mapOfScore = {}
+    mapOfScore['context'] = []
+    for input in data:
+        sentence1_cosine = '"' + input['sentence1'] + '"'
+        sentence2_cosine = '"' + input['sentence2'] + '"'
+        mapOfScore['context'].append({
+            "sentence1": input["sentence1"],
+            "sentence2": input["sentence2"],
+            "tag": input['tag'],
+            "score": sent2vecOnSentence(sentence1_cosine, sentence2_cosine)
+        })
+        index = index + 1
+        print(index)
+        print(sent2vecOnSentence(sentence1_cosine, sentence2_cosine))
+
+    with open(score_data, 'w') as jsonFile:
+        json.dump(mapOfScore, jsonFile, indent=3)
+
+getCosineSimilarity()
+# print(sent2vecOnSentence("context coordination integration Bolivia hold key play process infrastructure development ","school water needed girl sent fetch taking time away study play "))
+# sent2vecOnSentence("context coordination integration Bolivia hold key play process infrastructure development ","school water needed girl sent fetch taking time away study play ")
