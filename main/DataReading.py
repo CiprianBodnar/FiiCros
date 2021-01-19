@@ -3,12 +3,11 @@ from main.lesk.lesk import lesk_algorithm
 
 file_train_gold = '../training/new_train_gold.txt'
 file_data_context = '../training/train_data_context.txt'
-file_dataTrain = '../training/multilingual/training.en-en.data'
-file_goldTrain = '../training/multilingual/training.en-en.gold'
+file_dataTrain = '../test/multilingual/test.en-en.data'
+file_goldTrain = '../test/multilingual/test.en-en.gold'
 
 def readFromData(file_train_data):
     with open(
-            # 'C:\\Users\\Andrada\\OneDrive\\Desktop\\Master\\SPLN\\FiiCros\\training\\multilingual\\training.en-en.data',
             file_train_data ,'r', encoding="utf-8") as myfile:
         data = myfile.read()
 
@@ -17,7 +16,6 @@ def readFromData(file_train_data):
 
 def readFromGoldData(file_train_gold):
     with open(
-            # 'C:\\Users\\Andrada\\OneDrive\\Desktop\\Master\\SPLN\\FiiCros\\training\\multilingual\\training.en-en.gold',
             file_train_gold,'r', encoding="utf-8") as myfile:
         data = myfile.read()
 
@@ -26,7 +24,7 @@ def readFromGoldData(file_train_gold):
 
 def readFromTrainData():
     with open(
-            'C:\\Users\\Andrada\\OneDrive\\Desktop\\Master\\SPLN\\FiiCros\\training\\example.json',
+            'C:\\Users\\Andrada\\OneDrive\\Desktop\\Master\\SPLN\\FiiCros\\results\\test.en-en.json',
             'r', encoding="utf-8") as myfile:
         data = myfile.read()
 
@@ -65,7 +63,7 @@ def apply_lesk(train_gold):
         })
        # f.writelines(context["id"] + '=>' + tag + '\n')
 
-    with open('../training/example.json', 'w') as jsonFile:
+    with open('../results/test.en-en', 'w') as jsonFile:
         json.dump(mapOfContext, jsonFile, indent= 3)
     f.close()
 
@@ -85,4 +83,4 @@ def result_accuracy():
 # result_accuracy()
 
 
-# apply_lesk(file_train_gold)
+apply_lesk(file_train_gold)

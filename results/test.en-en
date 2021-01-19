@@ -1,5 +1,4 @@
-{
-   "context": [
+[
       {
          "id": "test.en-en.0",
          "tag": "T"
@@ -4000,5 +3999,4 @@
          "id": "test.en-en.999",
          "tag": "T"
       }
-   ]
-}
+]
