@@ -1,0 +1,24 @@
+{
+   "context": [
+      {
+         "id": "training.en-en.0",
+         "tag": "F"
+      },
+      {
+         "id": "training.en-en.1",
+         "tag": "F"
+      },
+      {
+         "id": "training.en-en.2",
+         "tag": "T"
+      },
+      {
+         "id": "training.en-en.3",
+         "tag": "T"
+      },
+      {
+         "id": "training.en-en.4",
+         "tag": "T"
+      }
+   ]
+}
