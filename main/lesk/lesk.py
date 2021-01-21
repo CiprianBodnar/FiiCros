@@ -14,5 +14,6 @@ def lesk_algorithm(sentence1, sentence2, lemma):
         tag = "T"
     else:
         tag = "F"
-    return tag, answer1, definition1, answer2, definition2
+    # return tag, answer1, definition1, answer2, definition2
+    return tag
 
