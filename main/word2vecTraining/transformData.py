@@ -5,13 +5,40 @@ from nltk.stem.porter import *
 from gensim.parsing.preprocessing import STOPWORDS
 import string
 from main.DataReading import readFromData, readFromGoldData
-import numpy as np
 import collections
 from nltk.tokenize import sent_tokenize, word_tokenize
 import gensim
 from gensim.models import Word2Vec
 from scipy import spatial
 from sent2vec.vectorizer import Vectorizer
+import math
+import re
+from collections import Counter
+
+
+WORD = re.compile(r"\w+")
+def get_cosine_vectorial(sentence1, sentence2):
+    def text_to_vector(text):
+        words = WORD.findall(text)
+        return Counter(words)
+
+    vec1 = text_to_vector(sentence1)
+    vec2 = text_to_vector(sentence2)
+
+    intersection = set(vec1.keys()) & set(vec2.keys())
+    numerator = sum([vec1[x] * vec2[x] for x in intersection])
+
+    sum1 = sum([vec1[x] ** 2 for x in list(vec1.keys())])
+    sum2 = sum([vec2[x] ** 2 for x in list(vec2.keys())])
+    denominator = math.sqrt(sum1) * math.sqrt(sum2)
+
+    if not denominator:
+        return 0.0
+    else:
+        return float(numerator) / denominator
+
+
+# print(get_cosine_vectorial("This is a foo bar sentence .", "This sentence is similar to a foo bar sentence ."))
 
 
 def tokenizationSentence(sentence):
@@ -116,10 +143,10 @@ def createNewTrainData():
     with open(final_train_data, 'w') as jsonFile:
         json.dump(mapOfContext, jsonFile, indent=3)
 
-
-def getVocabulary():
+final_train_data = '../../training/train_data_word2vec.json'
+def getVocabulary(final_train_data):
     all_words = []
-    final_train_data = '../../training/train_data_word2vec.json'
+
     with open(final_train_data, "r") as f:
         data = json.load(f)
 
@@ -151,7 +178,7 @@ def getVocabulary():
     return final_vocabulary, count, data_matrix
 
 
-final_vocabulary, count, data_matrix = getVocabulary()
+# final_vocabulary, count, data_matrix = getVocabulary(final_train_data)
 
 
 # print(final_vocabulary)
@@ -162,7 +189,7 @@ def cosine_similarity(vocabulary, word1, word2):
     return model1.similarity(word1, word2)
 
 
-# cosine_similarity(data_matrix, 'context', 'coordination')
+# print(cosine_similarity(data_matrix, 'context', 'coordination'))
 
 
 def addToMatrix():
@@ -248,6 +275,7 @@ def getCosineSimilarity():
     with open(score_data, 'w') as jsonFile:
         json.dump(mapOfScore, jsonFile, indent=3)
 
-getCosineSimilarity()
+# getCosineSimilarity()
 # print(sent2vecOnSentence("context coordination integration Bolivia hold key play process infrastructure development ","school water needed girl sent fetch taking time away study play "))
 # sent2vecOnSentence("context coordination integration Bolivia hold key play process infrastructure development ","school water needed girl sent fetch taking time away study play ")
+
