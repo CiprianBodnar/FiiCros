@@ -4,7 +4,7 @@ from main.lesk.lesk import lesk_algorithm
 file_train_gold = '../training/new_train_gold.txt'
 file_data_context = '../training/train_data_context.txt'
 file_dataTrain = '../test/multilingual/test.en-en.data'
-file_goldTrain = '../test/multilingual/test.en-en.gold'
+file_goldTrain = '../training/multilingual/training.en-en.gold'
 
 def readFromData(file_train_data):
     with open(
@@ -24,7 +24,7 @@ def readFromGoldData(file_train_gold):
 
 def readFromTrainData():
     with open(
-            'C:\\Users\\Andrada\\OneDrive\\Desktop\\Master\\SPLN\\FiiCros\\results\\test.en-en.json',
+            'C:\\Users\\Andrada\\OneDrive\\Desktop\\Master\\SPLN\\FiiCros\\results\\training.en-en.data',
             'r', encoding="utf-8") as myfile:
         data = myfile.read()
 
@@ -83,4 +83,4 @@ def result_accuracy():
 # result_accuracy()
 
 
-apply_lesk(file_train_gold)
+# apply_lesk(file_train_gold)
