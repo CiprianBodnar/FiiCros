@@ -3,27 +3,29 @@ from main.DataReading import readFromData, readFromGoldData
 from main.lesk.lesk import lesk_algorithm
 from main.word2vecTraining.transformData import transformSentence, sent2vecOnSentence, get_cosine_vectorial
 
-# file_train_gold = '../training/new_train_gold.txt'
-# file_goldTrain = '../training/multilingual/training.en-en.gold'
-file_dataTest = '../test/multilingual/test.ar-ar.data-translated'
-final_data = '../results/final/test.ar-ar'
+file_train_gold = '../training/new_train_gold.txt'
+file_goldTrain = '../training/multilingual/training.en-en.gold'
+file_dataTrain = '../test/multilingual/test.en-en.data'
+final_data = '../results/final/test.en-en'
 
 
 def LeskWithSent2Vec(final_data):
     # gold = readFromGoldData(file_goldTrain)
-    # total_inputs = len(test)
-    # correct_outputs = 0
+    train = readFromData(file_dataTrain)
 
-    test = readFromData(file_dataTest)
+    # total_inputs = len(gold)
+    correct_outputs = 0
+
     mapOfScore = {}
     mapOfScore['context'] = []
 
-    for index in range(0, len(test)):
-        sentence1 = '"' + transformSentence(test[index]['sentence1'], test[index]['lemma'], 0) + '"'
-        sentence2 = '"' + transformSentence(test[index]['sentence2'], test[index]['lemma'], 0) + '"'
-        lemma = test[index]['lemma']
+    # for index in range(0, len(train)):
+    for index in range(0, 3):
+        sentence1 = '"' + transformSentence(train[index]['sentence1'], train[index]['lemma'], 0) + '"'
+        sentence2 = '"' + transformSentence(train[index]['sentence2'], train[index]['lemma'], 0) + '"'
+        lemma = train[index]['lemma']
         # tag = gold[index]['tag']
-        id = test[index]['id']
+        id = train[index]['id']
         score_sent2vec = sent2vecOnSentence(sentence1, sentence2)
         lesk_tag = lesk_algorithm(sentence1, sentence2, lemma)
 
