@@ -19,8 +19,7 @@ def LeskWithSent2Vec(final_data):
     mapOfScore = {}
     mapOfScore['context'] = []
 
-    # for index in range(0, len(train)):
-    for index in range(0, 3):
+    for index in range(0, len(train)):
         sentence1 = '"' + transformSentence(train[index]['sentence1'], train[index]['lemma'], 0) + '"'
         sentence2 = '"' + transformSentence(train[index]['sentence2'], train[index]['lemma'], 0) + '"'
         lemma = train[index]['lemma']
