@@ -3,7 +3,7 @@ from main.lesk.lesk import lesk_algorithm
 
 file_train_gold = '../training/new_train_gold.txt'
 file_data_context = '../training/train_data_context.txt'
-file_dataTrain = '../test/multilingual/test.en-en.data'
+file_dataTrain = '../test/multilingual/test.fr-fr.data-translated'
 file_goldTrain = '../training/multilingual/training.en-en.gold'
 
 def readFromData(file_train_data):
@@ -63,7 +63,7 @@ def apply_lesk(train_gold):
         })
        # f.writelines(context["id"] + '=>' + tag + '\n')
 
-    with open('../results/test.en-en', 'w') as jsonFile:
+    with open('../results/test.fr-fr', 'w') as jsonFile:
         json.dump(mapOfContext, jsonFile, indent= 3)
     f.close()
 
@@ -80,7 +80,49 @@ def result_accuracy():
     print("Good answer(8000 initial): ", good, '\n')
     print("Percentage of good answer: ", result, '%')
 
+def translate(source):
+    from deep_translator import GoogleTranslator
+    obj = readFromData(file_dataTrain)
+    mapOfContext = {}
+    mapOfContext['context'] = []
+    for context in obj:
+        try:
+            sentence1 = GoogleTranslator(source, target='en').translate(context["sentence1"])
+        except:
+            sentence1 = context["sentence1"]
+
+        print("sentence1", sentence1)
+        try:
+            sentence2 = GoogleTranslator(source, target='en').translate(context["sentence2"])
+        except:
+            sentence2 = context["sentence2"]
+        print("sentence2", sentence2)
+
+        try:
+            lemma = GoogleTranslator(source, target='en').translate(context["lemma"])
+        except:
+            lemma = context["lemma"]
+        print("lemma", lemma)
+
+        mapOfContext['context'].append({
+            'id': context["id"],
+            'lemma': lemma,
+            'pos': context["pos"],
+            'sentence1': sentence1,
+            'sentence2': sentence2,
+
+            'start1': context["start1"],
+            'end1': context["end1"],
+            'start2': context["start2"],
+            'end2': context["end2"]
+
+            # 'ranges1': context["ranges1"],
+            # 'ranges2': context["ranges2"]
+        })
+
+    with open('../test/multilingual/test.ar-ar'
+              '.data-translated', 'w') as jsonFile:
+        json.dump(mapOfContext, jsonFile, indent=3)
 # result_accuracy()
 
-
-# apply_lesk(file_train_gold)
+apply_lesk(file_train_gold)
