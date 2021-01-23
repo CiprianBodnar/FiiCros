@@ -1,5 +1,4 @@
-{
-   "context": [
+[
       {
          "id": "test.ar-ar.0",
          "lemma": "Servants",
@@ -11000,5 +10999,4 @@
          "start2": "24",
          "end2": "31"
       }
-   ]
-}
+]

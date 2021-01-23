@@ -1,5 +1,4 @@
-{
-   "context": [
+[
       {
          "id": "test.en-zh.0",
          "lemma": "gently",
@@ -9000,5 +8999,4 @@
          "ranges1": "145-153",
          "ranges2": "6-8"
       }
-   ]
-}
+]

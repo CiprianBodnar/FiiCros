@@ -1,5 +1,4 @@
-{
-   "context": [
+[
       {
          "id": "test.ru-ru.0",
          "lemma": "invitation",
@@ -11000,5 +10999,4 @@
          "start2": "7",
          "end2": "12"
       }
-   ]
-}
+]
