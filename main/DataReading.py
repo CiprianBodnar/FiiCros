@@ -125,4 +125,4 @@ def translate(source):
         json.dump(mapOfContext, jsonFile, indent=3)
 # result_accuracy()
 
-apply_lesk(file_train_gold)
+#apply_lesk(file_train_gold)
