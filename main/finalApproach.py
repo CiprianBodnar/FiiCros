@@ -5,15 +5,15 @@ from main.word2vecTraining.transformData import transformSentence, sent2vecOnSen
 
 file_train_gold = '../training/new_train_gold.txt'
 file_goldTrain = '../training/multilingual/training.en-en.gold'
-file_dataTrain = '../test/multilingual/test.en-en.data'
+file_dataTrain = '../training/multilingual/training.en-en.data'
 final_data = '../results/final/test.en-en'
 
 
 def LeskWithSent2Vec(final_data):
-    # gold = readFromGoldData(file_goldTrain)
+    gold = readFromGoldData(file_goldTrain)
     train = readFromData(file_dataTrain)
 
-    # total_inputs = len(gold)
+    total_inputs = len(gold)
     correct_outputs = 0
 
     mapOfScore = {}
@@ -23,7 +23,7 @@ def LeskWithSent2Vec(final_data):
         sentence1 = '"' + transformSentence(train[index]['sentence1'], train[index]['lemma'], 0) + '"'
         sentence2 = '"' + transformSentence(train[index]['sentence2'], train[index]['lemma'], 0) + '"'
         lemma = train[index]['lemma']
-        # tag = gold[index]['tag']
+        tag = gold[index]['tag']
         id = train[index]['id']
         score_sent2vec = sent2vecOnSentence(sentence1, sentence2)
         lesk_tag = lesk_algorithm(sentence1, sentence2, lemma)
@@ -44,8 +44,8 @@ def LeskWithSent2Vec(final_data):
         else:
             final_tag = "F"
 
-        # if final_tag == tag:
-        #     correct_outputs = correct_outputs + 1
+        if final_tag == tag:
+            correct_outputs = correct_outputs + 1
 
         mapOfScore['context'].append({
             "id": id,
@@ -63,8 +63,8 @@ def LeskWithSent2Vec(final_data):
     with open(final_data, 'w') as jsonFile:
         json.dump(mapOfScore, jsonFile, indent=3)
 
-    # print("Raspunsuri corecte: ", correct_outputs, " din ", total_inputs)
-    # print("Acuratetea este de:", correct_outputs / total_inputs * 100, "%")
+    print("Raspunsuri corecte: ", correct_outputs, " din ", total_inputs)
+    print("Acuratetea este de:", correct_outputs / total_inputs * 100, "%")
 
 
 LeskWithSent2Vec(final_data)
